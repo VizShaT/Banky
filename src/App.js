@@ -1,25 +1,23 @@
 import React, { Component } from "react";
 import formatNumber from "format-number";
-import store from "./store";
 import { withdrawMoney } from "./actions";
 import photographer from "./images/girl.png";
 import "./App.css";
+import { connect } from 'react-redux';
 
 class App extends Component {
   render() {
-    const { totalAmount, username } = store.getState();
-
     const handleWithdrawMoney = e => {
       const amount = e.target.dataset.amount;
-      store.dispatch(withdrawMoney(amount));
+      this.props.withdrawMoney(amount);
     };
 
     return (
       <div className="App">
         <img className="App__userpic" src={photographer} alt="user" />
-        <p className="App__username">Hello, {username}! </p>
+        <p className="App__username">Hello, {this.props.username}! </p>
         <div className="App__amount">
-          {formatNumber({ prefix: "Rs." })(totalAmount)}
+          {formatNumber({ prefix: "Rs." })(this.props.totalAmount)}
           <p className="App__amount--info">Total Amount</p>
         </div>
 
@@ -38,4 +36,11 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps(state){
+  return {
+    totalAmount: state.totalAmount,
+    username: state.username
+  }
+}
+
+export default connect(mapStateToProps, {withdrawMoney})(App);
