@@ -1,2 +1,3 @@
 # Banky
-Created with CodeSandbox
+
+## React-Redux example app
